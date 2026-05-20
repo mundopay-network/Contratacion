@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contratar - MundoMÓVIL Network</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar"><div class="topbar__inner">
+    <div class="topbar__promo">PROMOCIÓN – Llamadas y GB ilimitados por 9,95€ al mes.</div>
+    <div class="topbar__contact">Llámanos al <a href="tel:910054564" target="_blank">910 054 564</a><span>|</span><a href="https://www.mmovilnetwork.com/contacta-con-nosotros" target="_blank">¿O te llamamos nosotros?</a></div>
+    <div class="topbar__social">
+        <a href="https://www.instagram.com/mundomovilnetwork/" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        <a href="https://www.facebook.com/MundoMovilNetwork" target="_blank" aria-label="Facebook"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+        <a href="https://www.linkedin.com/company/mundomovilnetwork" target="_blank" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2zM4 6a2 2 0 100-4 2 2 0 000 4z"/></svg></a>
+        <a href="https://twitter.com/mlovilnetwork" target="_blank" aria-label="X"><svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+    </div>
+</div></div>
+
+<!-- PROGRESS -->
+<div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:25%"></div></div>
+
+<!-- NAVBAR REDUCIDO -->
+<nav class="navbar"><div class="navbar__inner">
+    <a href="https://www.mmovilnetwork.com" target="_blank" class="navbar__logo">MundoMÓVIL<small>Network</small></a>
+    <a href="https://www.mmovilnetwork.com" target="_top" class="navbar__back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Volver al inicio
+    </a>
+</div></nav>
+
+<!-- HERO CONTRATACIÓN -->
+<section class="hero-contratar">
+    <div class="hero-contratar__inner">
+        <div class="hero-contratar__eyebrow">
+            <svg width="8" height="8" viewBox="0 0 8 8" fill="currentColor"><circle cx="4" cy="4" r="4"/></svg>
+            Contratación 100% online
+        </div>
+        <h1 class="hero-contratar__title">Contrata tu <em>servicio online</em></h1>
+        <p class="hero-contratar__sub">Tu alta gestionada en minutos. Sin papeleos, sin esperas.</p>
+
+    </div>
+</section>
+
+<main><div class="container">
+
+    <div class="steps" id="stepsBar">
+      <div class="step active" id="step-ind-1"><div class="step-num">1</div><span>Tarifa</span></div>
+      <div class="step-sep"></div>
+      <div class="step" id="step-ind-2"><div class="step-num">2</div><span>Datos</span></div>
+      <div class="step-sep"></div>
+      <div class="step" id="step-ind-3"><div class="step-num">3</div><span>Verificación</span></div>
+      <div class="step-sep"></div>
+      <div class="step" id="step-ind-5"><div class="step-num">4</div><span>Confirmar</span></div>
+    </div>
+
+    <!-- DISTRIBUIDOR -->
+    <div class="dist-bar">
+        <label class="dist-check">
+            <input type="checkbox" id="chk-distribuidor" onchange="toggleDistribuidor(this)">
+            🤝 ¿Venta de distribuidor?
+        </label>
+        <div class="dist-code" id="dist-code-wrap">
+            <input type="text" id="cod-distribuidor" placeholder="Código de distribuidor" maxlength="30">
+        </div>
+    </div>
+
+    <!-- OBSERVACIONES DISTRIBUIDOR -->
+    <div id="obs-wrap" style="display:none;max-width:860px;margin:0 auto 16px;">
+        <textarea id="observaciones" placeholder="Observaciones: descuento aplicado, código promocional, notas para el equipo..." rows="3" style="background:rgba(95,75,139,0.1);border:1px solid rgba(95,75,139,0.35);border-radius:12px;color:#fff;font-family:'DM Sans',sans-serif;font-size:0.9rem;padding:12px 14px;width:100%;outline:none;resize:vertical;transition:border 0.2s;" onfocus="this.style.borderColor='#5F4B8B'" onblur="this.style.borderColor='rgba(95,75,139,0.35)'"></textarea>
+    </div>
+
+    <!-- ===== STEP 1: TARIFAS ===== -->
+    <div class="form-section active" id="section-1">
+      <div class="sec-title">¿Qué servicio te interesa?</div>
+      <div class="sec-sub">Selecciona una tarifa para continuar con tu contratación.</div>
+
+      <div class="bloque-titulo">Solo Móvil</div>
+      <div class="tariff-grid">
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="1 Línea · 100GB (con portabilidad)" data-price="5.00" data-tipo="movil"><div class="tariff-check"></div><div class="tariff-badge movil">Móvil 5G</div><div class="tariff-name">1 Línea · 100 GB</div><div class="tariff-desc">Con portabilidad · Alta nueva: 6,95€/mes · Red 5G</div><div class="tariff-price"><sup>€</sup>5,00<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="2 Líneas · 100GB c/u (con portabilidad)" data-price="10.00" data-tipo="movil"><div class="tariff-check"></div><div class="tariff-badge movil">Móvil 5G</div><div class="tariff-name">2 Líneas · 100 GB c/u</div><div class="tariff-desc">Con portabilidad · Alta nueva: 11,95€/mes · Red 5G</div><div class="tariff-price"><sup>€</sup>10,00<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="1 Línea · Ilimitada 5G" data-price="9.95" data-tipo="movil"><div class="tariff-check"></div><div class="tariff-badge movil">⭐ Móvil 5G</div><div class="tariff-name">1 Línea · Ilimitada 5G</div><div class="tariff-desc">Llamadas y datos ilimitados · Port. y alta nueva · Red 5G</div><div class="tariff-price"><sup>€</sup>9,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="2 Líneas · Ilimitadas 5G" data-price="15.00" data-tipo="movil"><div class="tariff-check"></div><div class="tariff-badge movil">⭐ Móvil 5G</div><div class="tariff-name">2 Líneas · Ilimitadas 5G</div><div class="tariff-desc">Llamadas y datos ilimitados · Port. y alta nueva · Red 5G</div><div class="tariff-price"><sup>€</sup>15,00<span>/mes</span></div></div>
+      </div>
+
+      <div class="bloque-titulo">Solo Fibra</div>
+      <div class="tariff-grid">
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 600MB" data-price="21.95" data-tipo="fibra"><div class="tariff-check"></div><div class="tariff-badge fibra">Fibra</div><div class="tariff-name">Fibra 600MB</div><div class="tariff-desc">Simétrica · Alta e instalación gratis</div><div class="tariff-price"><sup>€</sup>21,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 1GB" data-price="24.95" data-tipo="fibra"><div class="tariff-check"></div><div class="tariff-badge fibra">⭐ Fibra</div><div class="tariff-name">Fibra 1GB</div><div class="tariff-desc">Simétrica · Alta e instalación gratis</div><div class="tariff-price"><sup>€</sup>24,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 600MB + Fijo" data-price="27.95" data-tipo="fibra"><div class="tariff-check"></div><div class="tariff-badge fibra">Fibra + Fijo</div><div class="tariff-name">Fibra 600MB + Fijo</div><div class="tariff-desc">Fijo ilimitado + 60 min a móvil</div><div class="tariff-price"><sup>€</sup>27,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 1GB + Fijo" data-price="29.95" data-tipo="fibra"><div class="tariff-check"></div><div class="tariff-badge fibra">Fibra + Fijo</div><div class="tariff-name">Fibra 1GB + Fijo</div><div class="tariff-desc">Fijo ilimitado + 60 min a móvil</div><div class="tariff-price"><sup>€</sup>29,95<span>/mes</span></div></div>
+      </div>
+
+      <div class="bloque-titulo">Fibra + Móvil</div>
+      <div class="tariff-grid">
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 600MB + 1 Línea 100GB" data-price="26.95" data-tipo="pack"><div class="tariff-check"></div><div class="tariff-badge pack">Fibra + Móvil</div><div class="tariff-name">Fibra 600MB + 100GB</div><div class="tariff-desc">1 línea · Llamadas ilimitadas · Red 5G</div><div class="tariff-price"><sup>€</sup>26,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 600MB + 2 Líneas 100GB" data-price="29.95" data-tipo="pack"><div class="tariff-check"></div><div class="tariff-badge pack">Fibra + Móvil</div><div class="tariff-name">Fibra 600MB + 2 Líneas 100GB</div><div class="tariff-desc">2 líneas · 100GB c/u · Llamadas ilimitadas · 5G</div><div class="tariff-price"><sup>€</sup>29,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 600MB + Ilimitado 5G" data-price="29.95" data-tipo="pack"><div class="tariff-check"></div><div class="tariff-badge pack">⭐ Fibra + Móvil</div><div class="tariff-name">Fibra 600MB + GB Ilimitados</div><div class="tariff-desc">1 línea · Datos y llamadas ilimitados · 5G</div><div class="tariff-price"><sup>€</sup>29,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Fibra 1GB + Ilimitado 5G" data-price="34.95" data-tipo="pack"><div class="tariff-check"></div><div class="tariff-badge pack">⭐ Fibra + Móvil</div><div class="tariff-name">Fibra 1GB + GB Ilimitados</div><div class="tariff-desc">1 línea · Datos y llamadas ilimitados · 5G</div><div class="tariff-price"><sup>€</sup>34,95<span>/mes</span></div></div>
+      </div>
+
+      <div class="bloque-titulo">Fibra + Móvil + TV</div>
+      <div class="tariff-grid">
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="1 Línea 60GB + Fibra 600MB + Fijo + TV" data-price="29.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack TV</div><div class="tariff-name">Fibra 600MB + Fijo + 1L 60GB + TV</div><div class="tariff-desc">1 línea 60GB · TV incluida · Promo 12m → 32,95€/mes</div><div class="tariff-price"><sup>€</sup>29,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="1 Línea 60GB + Fibra 1GB + Fijo + TV" data-price="34.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack TV</div><div class="tariff-name">Fibra 1GB + Fijo + 1L 60GB + TV</div><div class="tariff-desc">1 línea 60GB · TV incluida · Promo 12m → 36,95€/mes</div><div class="tariff-price"><sup>€</sup>34,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="1 Línea 100GB + Fibra 600MB + Fijo + TV" data-price="34.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack TV</div><div class="tariff-name">Fibra 600MB + Fijo + 1L 100GB + TV</div><div class="tariff-desc">1 línea 100GB · TV incluida · Promo 12m → 36,95€/mes</div><div class="tariff-price"><sup>€</sup>34,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="1 Línea 100GB + Fibra 1GB + Fijo + TV" data-price="36.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack TV</div><div class="tariff-name">Fibra 1GB + Fijo + 1L 100GB + TV</div><div class="tariff-desc">1 línea 100GB · TV incluida · Promo 12m → 39,95€/mes</div><div class="tariff-price"><sup>€</sup>36,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="2 Líneas 60GB + Fibra 600MB + Fijo + TV" data-price="29.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack Familia</div><div class="tariff-name">Fibra 600MB + Fijo + 2L 60GB + TV</div><div class="tariff-desc">2 líneas 60GB compartidos · TV incluida · Promo 12m → 32,95€/mes</div><div class="tariff-price"><sup>€</sup>29,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="2 Líneas 60GB + Fibra 1GB + Fijo + TV" data-price="34.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack Familia</div><div class="tariff-name">Fibra 1GB + Fijo + 2L 60GB + TV</div><div class="tariff-desc">2 líneas 60GB compartidos · TV incluida · Promo 12m → 36,95€/mes</div><div class="tariff-price"><sup>€</sup>34,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="3 Líneas 180GB + Fibra 600MB + Fijo + TV" data-price="39.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack Familia XL</div><div class="tariff-name">Fibra 600MB + Fijo + 3L 180GB + TV</div><div class="tariff-desc">3 líneas 180GB compartidos · TV incluida · Precio fijo</div><div class="tariff-price"><sup>€</sup>39,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="3 Líneas 180GB + Fibra 1GB + Fijo + TV" data-price="42.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">Pack Familia XL</div><div class="tariff-name">Fibra 1GB + Fijo + 3L 180GB + TV</div><div class="tariff-desc">3 líneas 180GB compartidos · TV incluida · Precio fijo</div><div class="tariff-price"><sup>€</sup>42,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="3 Líneas Ilimitadas + Fibra 600MB + Fijo + TV" data-price="44.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">⭐ Pack Premium</div><div class="tariff-name">Fibra 600MB + Fijo + 3L Ilimitadas + TV</div><div class="tariff-desc">3 líneas datos ilimitados · TV incluida · Precio fijo</div><div class="tariff-price"><sup>€</sup>44,95<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="3 Líneas Ilimitadas + Fibra 1GB + Fijo + TV" data-price="47.95" data-tipo="pack-tv"><div class="tariff-check"></div><div class="tariff-badge tv">⭐ Pack Premium</div><div class="tariff-name">Fibra 1GB + Fijo + 3L Ilimitadas + TV</div><div class="tariff-desc">3 líneas datos ilimitados · TV incluida · Precio fijo</div><div class="tariff-price"><sup>€</sup>47,95<span>/mes</span></div></div>
+      </div>
+
+      <div class="bloque-titulo">Alarma del Hogar</div>
+      <div class="tariff-grid">
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Alarma Low Cost" data-price="25.00" data-tipo="alarma"><div class="tariff-check"></div><div class="tariff-badge alarm">Alarma Hogar</div><div class="tariff-name">Alarma Low Cost</div><div class="tariff-desc">25€/mes · Alta e instalación gratis</div><div class="tariff-price"><sup>€</sup>25,00<span>/mes</span></div></div>
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Alarma Promocional" data-price="19.95" data-tipo="alarma"><div class="tariff-check"></div><div class="tariff-badge alarm">⭐ Alarma Hogar</div><div class="tariff-name">Alarma Promocional</div><div class="tariff-desc">19,95€ (3 meses) → 39,95€/mes · Alta e instalación gratis</div><div class="tariff-price"><sup>€</sup>19,95<span>/mes</span></div></div>
+      </div>
+
+      <div class="bloque-titulo">Energía</div>
+      <div class="tariff-grid">
+
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Plan Luz Hogar" data-price="0" data-tipo="energia-luz">
+          <div class="tariff-check"></div><div class="tariff-badge energy">Luz</div>
+          <div class="tariff-name">Plan Luz Hogar</div>
+          <div class="tariff-desc">Mejor precio garantizado · Clientes MundoMÓVIL: 5€ descuento/mes (4 meses)</div>
+          <div class="tariff-price" style="font-size:0.82rem;font-family:'DM Sans',sans-serif;font-weight:700;color:var(--accent-light);line-height:1.8;">
+            0,109€/kWh<br><span style="font-size:0.71rem;color:rgba(255,255,255,0.45);">Potencia P1 0,117€ · P2 0,04€</span>
+          </div>
+        </div>
+
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Plan Solar" data-price="0" data-tipo="energia-solar">
+          <div class="tariff-check"></div><div class="tariff-badge top">Solar</div>
+          <div class="tariff-name">Plan Solar</div>
+          <div class="tariff-desc">Autoconsumo con venta de excedentes · Clientes MundoMÓVIL: 5€ descuento/mes (4 meses)</div>
+          <div class="tariff-price" style="font-size:0.82rem;font-family:'DM Sans',sans-serif;font-weight:700;color:var(--accent-light);line-height:1.8;">
+            0,109€/kWh<br><span style="font-size:0.71rem;color:rgba(255,255,255,0.45);">Potencia P1 0,117€ · P2 0,04€</span><br>
+            <span style="font-size:0.71rem;color:rgba(255,200,50,0.8);">Excedente: 0,06€/kWh</span>
+          </div>
+        </div>
+
+        <div class="tariff-card" onclick="selectTariff(this)" data-name="Plan Luz y Gas" data-price="0" data-tipo="energia-gas">
+          <div class="tariff-check"></div><div class="tariff-badge energy">Luz + Gas</div>
+          <div class="tariff-name">Plan Luz y Gas</div>
+          <div class="tariff-desc">Mejor precio garantizado · Clientes MundoMÓVIL: 5€ descuento/mes (4 meses)</div>
+          <div class="tariff-price" style="font-size:0.82rem;font-family:'DM Sans',sans-serif;font-weight:700;color:var(--accent-light);line-height:1.8;">
+            Luz: 0,109€/kWh<br><span style="font-size:0.71rem;color:rgba(255,255,255,0.45);">Potencia P1 0,117€ · P2 0,04€</span><br>
+            <span style="font-size:0.71rem;color:rgba(255,255,255,0.45);">Gas: tarifa personalizada según tipo de acceso</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="btn-next-only" style="display:none;">
+        <button class="btn-primary" onclick="goStep(2)" id="btn-next-1" disabled style="max-width:200px;">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 2: DATOS ===== -->
+    <div class="form-section" id="section-2">
+      <div class="sec-title">Tus datos personales</div>
+      <div class="sec-sub">Completa todos los campos para gestionar tu alta correctamente.</div>
+
+      <div id="selectedBar" class="selected-bar hidden" style="flex-wrap:wrap;">
+        <div style="flex:1;min-width:0;"><div class="selected-bar-label">Tarifa seleccionada</div><div class="selected-bar-name" id="barName">—</div></div>
+        <div class="selected-bar-price" id="barPrice">—</div>
+        <div id="upsell-nota" style="display:none;width:100%;margin-top:8px;font-size:.75rem;color:var(--accent-light);font-weight:600;padding-top:8px;border-top:1px solid rgba(95,75,139,0.2);"></div>
+      </div>
+
+      <!-- AVISO LOPD -->
+      <div class="iban-note" style="margin-bottom:24px; border-color:rgba(95,75,139,0.4);">
+        🔒 <strong>Protección de datos:</strong> MundoMÓVIL Network tratará tus datos conforme a la Ley Orgánica de Protección de Datos (LOPDGDD). La documentación que adjuntes se utilizará <strong>únicamente para verificar tu identidad</strong> en el proceso de contratación y prevenir fraudes. No se cederá a terceros ni se usará para ningún otro fin.
+      </div>
+
+      <!-- DATOS PERSONALES -->
+      <div class="form-block-title">👤 Datos del titular</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre completo <span>*</span></label>
+          <input type="text" id="nombre" placeholder="Ej: Ana García López">
+          <div class="field-error">Introduce nombre y apellidos</div>
+        </div>
+        <div class="field">
+          <label>DNI / NIE <span>*</span></label>
+          <input type="text" id="dni" placeholder="Ej: 12345678A" maxlength="10">
+          <div class="field-error">DNI/NIE inválido</div>
+        </div>
+        <div class="field">
+          <label>Teléfono de contacto <span>*</span></label>
+          <input type="text" id="telefono" placeholder="612345678" maxlength="9" oninput="this.value=this.value.replace(/\D/g,'')">
+          <div class="field-hint">9 dígitos · sin espacios · sin +34</div>
+          <div class="field-error">Teléfono inválido (9 dígitos)</div>
+        </div>
+        <div class="field">
+          <label>Correo electrónico <span>*</span></label>
+          <input type="email" id="email" placeholder="tucorreo@email.com">
+          <div class="field-error">Email inválido</div>
+        </div>
+        <div class="field">
+          <label>Fecha de nacimiento <span>*</span></label>
+          <input type="date" id="fecha-nac" style="color-scheme:dark;">
+          <div class="field-hint">Debes ser mayor de 18 años</div>
+          <div class="field-error" id="err-fecha-nac">Fecha de nacimiento obligatoria · debes ser mayor de 18 años</div>
+        </div>
+      </div>
+
+      <!-- DNI FOTOS -->
+      <div class="form-block-title">🪪 Documento de identidad</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>DNI/NIE — Cara frontal <span>*</span></label>
+          <div class="upload-box" id="box-dni-front">
+            <div class="upload-icon">🪪</div>
+            <div class="upload-label">Cara delantera del DNI/NIE</div>
+            <div class="upload-hint">JPG, PNG o PDF · máx. 5MB</div>
+            <div class="upload-actions">
+              <label class="upload-btn upload-btn--cam">
+                📷 Cámara
+                <input type="file" id="inp-dni-front" accept="image/*" capture="environment" style="display:none;" onchange="handleUpload(this,'box-dni-front','prev-dni-front')">
+              </label>
+              <label class="upload-btn">
+                📁 Archivo
+                <input type="file" id="inp-dni-front-file" accept="image/*,.pdf" style="display:none;" onchange="handleUploadAlt(this,'inp-dni-front','box-dni-front','prev-dni-front')">
+              </label>
+            </div>
+          </div>
+          <div id="prev-dni-front" class="upload-preview hidden"></div>
+          <div class="field-error" id="err-dni-front">Adjunta la cara frontal del DNI/NIE</div>
+        </div>
+        <div class="field">
+          <label>DNI/NIE — Cara trasera <span>*</span></label>
+          <div class="upload-box" id="box-dni-back">
+            <div class="upload-icon">🪪</div>
+            <div class="upload-label">Cara trasera del DNI/NIE</div>
+            <div class="upload-hint">JPG, PNG o PDF · máx. 5MB</div>
+            <div class="upload-actions">
+              <label class="upload-btn upload-btn--cam">
+                📷 Cámara
+                <input type="file" id="inp-dni-back" accept="image/*" capture="environment" style="display:none;" onchange="handleUpload(this,'box-dni-back','prev-dni-back')">
+              </label>
+              <label class="upload-btn">
+                📁 Archivo
+                <input type="file" id="inp-dni-back-file" accept="image/*,.pdf" style="display:none;" onchange="handleUploadAlt(this,'inp-dni-back','box-dni-back','prev-dni-back')">
+              </label>
+            </div>
+          </div>
+          <div id="prev-dni-back" class="upload-preview hidden"></div>
+          <div class="field-error" id="err-dni-back">Adjunta la cara trasera del DNI/NIE</div>
+        </div>
+      </div>
+
+      <!-- DIRECCIÓN ENVÍO SIM -->
+      <div class="form-block-title" id="lbl-envio">Dirección de envío de SIM</div>
+      <div id="blk-envio">
+        <div class="form-grid">
+          <div class="field">
+            <label>Tipo de vía <span>*</span></label>
+            <select id="envio-tipo"><option value="">Seleccionar...</option>
+              <option value="Calle">Calle</option>
+              <option value="Avenida">Avenida</option>
+              <option value="Plaza">Plaza</option>
+              <option value="Paseo">Paseo</option>
+              <option value="Rúa">Rúa</option>
+              <option value="Ronda">Ronda</option>
+              <option value="Camino">Camino</option>
+              <option value="Carretera">Carretera</option>
+              <option value="Travesía">Travesía</option>
+              <option value="Urbanización">Urbanización</option>
+              <option value="Polígono">Polígono</option>
+              <option value="Bulevar">Bulevar</option>
+              <option value="Glorieta">Glorieta</option>
+              <option value="Pasaje">Pasaje</option>
+              <option value="Callejón">Callejón</option>
+              <option value="Vía">Vía</option>
+              <option value="Autovía">Autovía</option>
+              <option value="Autopista">Autopista</option>
+              <option value="Cuesta">Cuesta</option>
+              <option value="Sendero">Sendero</option>
+            </select>
+            <div class="field-error" id="err-envio-tipo">Selecciona el tipo de vía</div>
+          </div>
+          <div class="field">
+            <label>Nombre de la vía <span>*</span></label>
+            <input type="text" id="envio-via" placeholder="Ej: Gran Vía, Cervantes...">
+            <div class="field-error" id="err-envio-via">Introduce el nombre de la vía</div>
+          </div>
+          <div class="field">
+            <label>Número <span>*</span></label>
+            <input type="text" id="envio-num" placeholder="14" maxlength="6">
+            <div class="field-error" id="err-envio-num">Introduce el número</div>
+          </div>
+          <div class="field">
+            <label>Bloque <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="envio-bloque" placeholder="Ej: B">
+          </div>
+          <div class="field">
+            <label>Escalera <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="envio-esc" placeholder="Ej: 2">
+          </div>
+          <div class="field">
+            <label>Planta <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="envio-planta" placeholder="Ej: 3">
+          </div>
+          <div class="field">
+            <label>Piso / Puerta <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="envio-piso" placeholder="Ej: 2ºA">
+          </div>
+          <div class="field">
+            <label>Código postal <span>*</span></label>
+            <input type="text" id="envio-cp" placeholder="28001" maxlength="5" inputmode="numeric">
+            <div class="field-error" id="err-envio-cp">5 dígitos obligatorio</div>
+          </div>
+          <div class="field">
+            <label>Localidad <span>*</span></label>
+            <input type="text" id="envio-loc" placeholder="Ej: Madrid">
+            <div class="field-error" id="err-envio-loc">Introduce la localidad</div>
+          </div>
+          <div class="field">
+            <label>Provincia <span>*</span></label>
+            <select id="envio-prov"><option value="">Seleccionar...</option>
+              <option value="Álava">Álava</option>
+              <option value="Albacete">Albacete</option>
+              <option value="Alicante">Alicante</option>
+              <option value="Almería">Almería</option>
+              <option value="Asturias">Asturias</option>
+              <option value="Ávila">Ávila</option>
+              <option value="Badajoz">Badajoz</option>
+              <option value="Baleares">Baleares</option>
+              <option value="Barcelona">Barcelona</option>
+              <option value="Burgos">Burgos</option>
+              <option value="Cáceres">Cáceres</option>
+              <option value="Cádiz">Cádiz</option>
+              <option value="Cantabria">Cantabria</option>
+              <option value="Castellón">Castellón</option>
+              <option value="Ciudad Real">Ciudad Real</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Cuenca">Cuenca</option>
+              <option value="Gerona">Gerona</option>
+              <option value="Granada">Granada</option>
+              <option value="Guadalajara">Guadalajara</option>
+              <option value="Guipúzcoa">Guipúzcoa</option>
+              <option value="Huelva">Huelva</option>
+              <option value="Huesca">Huesca</option>
+              <option value="Jaén">Jaén</option>
+              <option value="La Coruña">La Coruña</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Las Palmas">Las Palmas</option>
+              <option value="León">León</option>
+              <option value="Lérida">Lérida</option>
+              <option value="Lugo">Lugo</option>
+              <option value="Madrid">Madrid</option>
+              <option value="Málaga">Málaga</option>
+              <option value="Murcia">Murcia</option>
+              <option value="Navarra">Navarra</option>
+              <option value="Orense">Orense</option>
+              <option value="Palencia">Palencia</option>
+              <option value="Pontevedra">Pontevedra</option>
+              <option value="Salamanca">Salamanca</option>
+              <option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option>
+              <option value="Segovia">Segovia</option>
+              <option value="Sevilla">Sevilla</option>
+              <option value="Soria">Soria</option>
+              <option value="Tarragona">Tarragona</option>
+              <option value="Teruel">Teruel</option>
+              <option value="Toledo">Toledo</option>
+              <option value="Valencia">Valencia</option>
+              <option value="Valladolid">Valladolid</option>
+              <option value="Vizcaya">Vizcaya</option>
+              <option value="Zamora">Zamora</option>
+              <option value="Zaragoza">Zaragoza</option>
+              <option value="Ceuta">Ceuta</option>
+              <option value="Melilla">Melilla</option>
+            </select>
+            <div class="field-error" id="err-envio-prov">Selecciona la provincia</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIRECCIÓN INSTALACIÓN FIBRA (solo fibra/pack) -->
+      <div id="blk-fibra-wrap" style="display:none;">
+        <div class="form-block-title">Dirección de instalación de fibra</div>
+        <div style="margin-bottom:14px;">
+          <label class="toggle-label">
+            <input type="checkbox" id="chk-misma-dir" onchange="toggleMismaDireccion()">
+            <span>La dirección de instalación es la misma que la de envío</span>
+          </label>
+        </div>
+        <div id="fibra-dir-grid">
+        <div class="form-grid">
+          <div class="field">
+            <label>Tipo de vía <span>*</span></label>
+            <select id="fibra-tipo"><option value="">Seleccionar...</option>
+              <option value="Calle">Calle</option>
+              <option value="Avenida">Avenida</option>
+              <option value="Plaza">Plaza</option>
+              <option value="Paseo">Paseo</option>
+              <option value="Rúa">Rúa</option>
+              <option value="Ronda">Ronda</option>
+              <option value="Camino">Camino</option>
+              <option value="Carretera">Carretera</option>
+              <option value="Travesía">Travesía</option>
+              <option value="Urbanización">Urbanización</option>
+              <option value="Polígono">Polígono</option>
+              <option value="Bulevar">Bulevar</option>
+              <option value="Glorieta">Glorieta</option>
+              <option value="Pasaje">Pasaje</option>
+              <option value="Callejón">Callejón</option>
+              <option value="Vía">Vía</option>
+              <option value="Autovía">Autovía</option>
+              <option value="Autopista">Autopista</option>
+              <option value="Cuesta">Cuesta</option>
+              <option value="Sendero">Sendero</option>
+            </select>
+            <div class="field-error" id="err-fibra-tipo">Selecciona el tipo de vía</div>
+          </div>
+          <div class="field">
+            <label>Nombre de la vía <span>*</span></label>
+            <input type="text" id="fibra-via" placeholder="Ej: Gran Vía, Cervantes...">
+            <div class="field-error" id="err-fibra-via">Introduce el nombre de la vía</div>
+          </div>
+          <div class="field">
+            <label>Número <span>*</span></label>
+            <input type="text" id="fibra-num" placeholder="14" maxlength="6">
+            <div class="field-error" id="err-fibra-num">Introduce el número</div>
+          </div>
+          <div class="field">
+            <label>Bloque <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="fibra-bloque" placeholder="Ej: B">
+          </div>
+          <div class="field">
+            <label>Escalera <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="fibra-esc" placeholder="Ej: 2">
+          </div>
+          <div class="field">
+            <label>Planta <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="fibra-planta" placeholder="Ej: 3">
+          </div>
+          <div class="field">
+            <label>Piso / Puerta <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="fibra-piso" placeholder="Ej: 2ºA">
+          </div>
+          <div class="field">
+            <label>Código postal <span>*</span></label>
+            <input type="text" id="fibra-cp" placeholder="28001" maxlength="5" inputmode="numeric">
+            <div class="field-error" id="err-fibra-cp">5 dígitos obligatorio</div>
+          </div>
+          <div class="field">
+            <label>Localidad <span>*</span></label>
+            <input type="text" id="fibra-loc" placeholder="Ej: Madrid">
+            <div class="field-error" id="err-fibra-loc">Introduce la localidad</div>
+          </div>
+          <div class="field">
+            <label>Provincia <span>*</span></label>
+            <select id="fibra-prov"><option value="">Seleccionar...</option>
+              <option value="Álava">Álava</option>
+              <option value="Albacete">Albacete</option>
+              <option value="Alicante">Alicante</option>
+              <option value="Almería">Almería</option>
+              <option value="Asturias">Asturias</option>
+              <option value="Ávila">Ávila</option>
+              <option value="Badajoz">Badajoz</option>
+              <option value="Baleares">Baleares</option>
+              <option value="Barcelona">Barcelona</option>
+              <option value="Burgos">Burgos</option>
+              <option value="Cáceres">Cáceres</option>
+              <option value="Cádiz">Cádiz</option>
+              <option value="Cantabria">Cantabria</option>
+              <option value="Castellón">Castellón</option>
+              <option value="Ciudad Real">Ciudad Real</option>
+              <option value="Córdoba">Córdoba</option>
+              <option value="Cuenca">Cuenca</option>
+              <option value="Gerona">Gerona</option>
+              <option value="Granada">Granada</option>
+              <option value="Guadalajara">Guadalajara</option>
+              <option value="Guipúzcoa">Guipúzcoa</option>
+              <option value="Huelva">Huelva</option>
+              <option value="Huesca">Huesca</option>
+              <option value="Jaén">Jaén</option>
+              <option value="La Coruña">La Coruña</option>
+              <option value="La Rioja">La Rioja</option>
+              <option value="Las Palmas">Las Palmas</option>
+              <option value="León">León</option>
+              <option value="Lérida">Lérida</option>
+              <option value="Lugo">Lugo</option>
+              <option value="Madrid">Madrid</option>
+              <option value="Málaga">Málaga</option>
+              <option value="Murcia">Murcia</option>
+              <option value="Navarra">Navarra</option>
+              <option value="Orense">Orense</option>
+              <option value="Palencia">Palencia</option>
+              <option value="Pontevedra">Pontevedra</option>
+              <option value="Salamanca">Salamanca</option>
+              <option value="Santa Cruz de Tenerife">Santa Cruz de Tenerife</option>
+              <option value="Segovia">Segovia</option>
+              <option value="Sevilla">Sevilla</option>
+              <option value="Soria">Soria</option>
+              <option value="Tarragona">Tarragona</option>
+              <option value="Teruel">Teruel</option>
+              <option value="Toledo">Toledo</option>
+              <option value="Valencia">Valencia</option>
+              <option value="Valladolid">Valladolid</option>
+              <option value="Vizcaya">Vizcaya</option>
+              <option value="Zamora">Zamora</option>
+              <option value="Zaragoza">Zaragoza</option>
+              <option value="Ceuta">Ceuta</option>
+              <option value="Melilla">Melilla</option>
+            </select>
+            <div class="field-error" id="err-fibra-prov">Selecciona la provincia</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- LÍNEA MÓVIL (solo servicios con móvil) -->
+      <div id="blk-movil-wrap" style="display:none;">
+        <div class="form-block-title">Línea móvil</div>
+        <div class="option-cards" style="margin-bottom:20px;">
+          <div class="option-card active" id="opt-porta" onclick="setMovilMode('porta')">
+            <div class="option-card-icon">🔄</div>
+            <div class="option-card-label">Portabilidad</div>
+            <div class="option-card-sub">Conservo mi número</div>
+          </div>
+          <div class="option-card" id="opt-alta" onclick="setMovilMode('alta')">
+            <div class="option-card-icon">✨</div>
+            <div class="option-card-label">Alta nueva</div>
+            <div class="option-card-sub">Me asignan número nuevo</div>
+          </div>
+        </div>
+
+        <!-- Portabilidad -->
+        <div id="modo-porta">
+          <div class="form-grid">
+            <div class="field">
+              <label>Número a portar <span>*</span></label>
+              <input type="text" id="numero-porta" placeholder="612345678" maxlength="9" oninput="this.value=this.value.replace(/\D/g,'')">
+              <div class="field-hint">9 dígitos exactos · sin espacios · sin +34</div>
+              <div class="field-error" id="err-porta">Introduce 9 dígitos sin espacios ni +34</div>
+            </div>
+            <div class="field">
+              <label>Compañía donante <span>*</span></label>
+              <input type="text" id="compania-actual" placeholder="Ej: Movistar, Orange, Vodafone...">
+              <div class="field-error" id="err-compania">Indica tu compañía actual</div>
+            </div>
+          </div>
+          <!-- Origen del contrato -->
+          <div style="margin-top:16px;">
+            <label style="font-size:.82rem;font-weight:600;color:rgba(255,255,255,.6);display:block;margin-bottom:8px;">Origen del contrato <span style="color:#e05;">*</span></label>
+            <div class="option-cards" style="gap:8px;">
+              <div class="option-card active" id="opt-origen-contrato" onclick="setOrigenPorta('contrato')" style="padding:10px 14px;flex:1;">
+                <div class="option-card-icon" style="font-size:1rem;">📄</div>
+                <div class="option-card-label" style="font-size:.82rem;">Contrato</div>
+              </div>
+              <div class="option-card" id="opt-origen-prepago" onclick="setOrigenPorta('prepago')" style="padding:10px 14px;flex:1;">
+                <div class="option-card-icon" style="font-size:1rem;">💳</div>
+                <div class="option-card-label" style="font-size:.82rem;">Prepago</div>
+              </div>
+            </div>
+          </div>
+          <!-- ICCID (solo prepago) -->
+          <div id="blk-iccid" style="display:none;margin-top:14px;">
+            <div class="field">
+              <label>ICCID de la SIM <span>*</span></label>
+              <input type="text" id="iccid-porta" placeholder="8934XXXXXXXXXXXXXXX" maxlength="19" oninput="formatIccid(this,'iccid-porta')" style="font-family:monospace;letter-spacing:.04em;">
+              <div class="field-hint">19 dígitos · comienza siempre por 8934 · se encuentra en la tarjeta SIM o en Ajustes &gt; Información</div>
+              <div class="field-error" id="err-iccid-porta">ICCID inválido: 19 dígitos comenzando por 8934</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alta nueva -->
+        <div id="modo-alta" style="display:none;">
+          <div class="iban-note">✨ Se te asignará un número de teléfono disponible en el momento de activar la SIM. Lo recibirás por email y WhatsApp una vez tramitada el alta.</div>
+        </div>
+
+        <!-- Cambio de titular (panel, se activa con el check) -->
+        <div id="modo-cambio" style="display:none; margin-top:16px;">
+          <div class="iban-note" style="margin-bottom:16px; border-color:rgba(251,146,60,0.35); background:rgba(251,146,60,0.07);">
+            ⚠️ Para el cambio de titular es obligatorio aportar los datos del titular actual. También verificaremos su solvencia mediante Incofisa.
+          </div>
+          <div class="form-block-title" style="margin-top:0;">Datos del titular actual</div>
+          <div class="form-grid">
+            <div class="field">
+              <label>Nombre completo titular actual <span>*</span></label>
+              <input type="text" id="titular-nombre" placeholder="Ej: Carlos López García">
+              <div class="field-error" id="err-titular-nombre">Introduce el nombre del titular actual</div>
+            </div>
+            <div class="field">
+              <label>DNI / NIE titular actual <span>*</span></label>
+              <input type="text" id="titular-dni" placeholder="Ej: 87654321B" maxlength="10">
+              <div class="field-error" id="err-titular-dni">DNI/NIE inválido</div>
+            </div>
+            <div class="field">
+              <label>Número de la línea a cambiar <span>*</span></label>
+              <input type="text" id="numero-cambio" placeholder="612345678" maxlength="9" oninput="this.value=this.value.replace(/\D/g,'')">
+              <div class="field-hint">9 dígitos · sin espacios · sin +34</div>
+              <div class="field-error" id="err-numero-cambio">Introduce 9 dígitos</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Check cambio de titular (solo portabilidad) -->
+        <div id="cambio-titular-wrap" style="margin-top:20px;">
+          <label class="toggle-label" style="cursor:pointer;display:inline-flex;align-items:center;gap:10px;padding:12px 16px;background:rgba(251,146,60,0.07);border:1px solid rgba(251,146,60,0.25);border-radius:10px;">
+            <input type="checkbox" id="chk-cambio-titular" onchange="toggleCambioTitular()">
+            <span style="font-size:.85rem;font-weight:600;color:rgba(255,200,100,0.9);">👥 Cambio de titular</span>
+          </label>
+        </div>
+
+        <!-- Líneas adicionales dinámicas -->
+        <div id="lineas-adicionales-wrap" style="margin-top:4px;"></div>
+
+        <!-- Botón añadir línea adicional -->
+        <div style="margin-top:16px;">
+          <button type="button" onclick="abrirModalLineaAdicional()" style="background:rgba(95,75,139,0.12);border:1px dashed rgba(95,75,139,0.5);color:var(--accent-light);font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:600;padding:11px 20px;border-radius:10px;cursor:pointer;width:100%;">
+            + Añadir línea adicional
+          </button>
+        </div>
+      </div>
+
+      <!-- DATOS LUZ (solo energia-luz) -->
+      <div id="blk-luz-wrap" style="display:none;">
+        <div class="form-block-title">⚡ Datos del suministro eléctrico</div>
+        <div class="form-grid">
+          <div class="field" style="grid-column:1/-1;">
+            <label>CUPS del contador <span>*</span></label>
+            <input type="text" id="luz-cups" placeholder="ES0021000000000000AA" maxlength="22" style="font-family:monospace;letter-spacing:.04em;" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+            <div class="field-hint">22 caracteres · empieza por ES · encuéntralo en tu factura eléctrica o en el contador</div>
+            <div class="field-error" id="err-luz-cups">CUPS inválido · 22 caracteres comenzando por ES</div>
+          </div>
+          <div class="field">
+            <label>Nombre del titular del contrato <span>*</span></label>
+            <input type="text" id="luz-titular" placeholder="Ej: María García López">
+            <div class="field-error" id="err-luz-titular">Introduce el nombre del titular</div>
+          </div>
+          <div class="field">
+            <label>DNI / NIE del titular <span>*</span></label>
+            <input type="text" id="luz-dni" placeholder="Ej: 12345678Z" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+            <div class="field-error" id="err-luz-dni">DNI/NIE inválido</div>
+          </div>
+          <div class="field">
+            <label>Compañía comercializadora actual <span>*</span></label>
+            <input type="text" id="luz-compania" placeholder="Ej: Endesa, Iberdrola, Naturgy...">
+            <div class="field-error" id="err-luz-compania">Indica tu compañía actual</div>
+          </div>
+          <div class="field">
+            <label>Número de contrato / referencia <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional)</span></label>
+            <input type="text" id="luz-referencia" placeholder="Ej: 123456789">
+          </div>
+        </div>
+      </div>
+
+      <!-- DATOS ALARMA (solo alarma) -->
+      <div id="blk-alarma-wrap" style="display:none;">
+        <div class="form-block-title">🚨 Contactos de emergencia para la alarma</div>
+        <div class="iban-note" style="margin-bottom:20px;border-color:rgba(251,146,60,0.35);background:rgba(251,146,60,0.07);">
+          ⚠️ En caso de salto de alarma avisaremos a estas personas por orden de prioridad. También se facilitarán a las Fuerzas de Seguridad si es necesario. Deben ser personas de confianza y accesibles.
+        </div>
+
+        <!-- Contacto 1 -->
+        <div class="form-block-title" style="font-size:.85rem;margin-bottom:12px;">👤 Contacto prioritario 1 <span style="color:rgba(255,255,255,.35);font-weight:400;font-size:.75rem;">(principal)</span></div>
+        <div class="form-grid" style="margin-bottom:20px;">
+          <div class="field">
+            <label>Nombre completo <span>*</span></label>
+            <input type="text" id="alarma-c1-nombre" placeholder="Ej: Carlos López García">
+            <div class="field-error" id="err-alarma-c1-nombre">Introduce el nombre completo</div>
+          </div>
+          <div class="field">
+            <label>Teléfono de contacto <span>*</span></label>
+            <input type="text" id="alarma-c1-tel" placeholder="612345678" maxlength="9" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
+            <div class="field-error" id="err-alarma-c1-tel">Introduce un teléfono válido (9 dígitos)</div>
+          </div>
+          <div class="field">
+            <label>Relación con el titular <span>*</span></label>
+            <input type="text" id="alarma-c1-relacion" placeholder="Ej: Cónyuge, padre, vecino...">
+            <div class="field-error" id="err-alarma-c1-relacion">Indica la relación</div>
+          </div>
+          <div class="field">
+            <label>DNI / NIE <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional, recomendado para Policía)</span></label>
+            <input type="text" id="alarma-c1-dni" placeholder="Ej: 12345678Z" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+
+        <!-- Contacto 2 -->
+        <div class="form-block-title" style="font-size:.85rem;margin-bottom:12px;">👤 Contacto 2 <span style="color:rgba(255,255,255,.35);font-weight:400;font-size:.75rem;">(segundo aviso)</span></div>
+        <div class="form-grid" style="margin-bottom:20px;">
+          <div class="field">
+            <label>Nombre completo <span>*</span></label>
+            <input type="text" id="alarma-c2-nombre" placeholder="Ej: Ana Martínez Ruiz">
+            <div class="field-error" id="err-alarma-c2-nombre">Introduce el nombre completo</div>
+          </div>
+          <div class="field">
+            <label>Teléfono de contacto <span>*</span></label>
+            <input type="text" id="alarma-c2-tel" placeholder="612345678" maxlength="9" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
+            <div class="field-error" id="err-alarma-c2-tel">Introduce un teléfono válido (9 dígitos)</div>
+          </div>
+          <div class="field">
+            <label>Relación con el titular <span>*</span></label>
+            <input type="text" id="alarma-c2-relacion" placeholder="Ej: Hermano, amigo, empleado...">
+            <div class="field-error" id="err-alarma-c2-relacion">Indica la relación</div>
+          </div>
+          <div class="field">
+            <label>DNI / NIE <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional, recomendado para Policía)</span></label>
+            <input type="text" id="alarma-c2-dni" placeholder="Ej: 12345678Z" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+
+        <!-- Contacto 3 -->
+        <div class="form-block-title" style="font-size:.85rem;margin-bottom:12px;">👤 Contacto 3 <span style="color:rgba(255,255,255,.35);font-weight:400;font-size:.75rem;">(tercer aviso)</span></div>
+        <div class="form-grid" style="margin-bottom:20px;">
+          <div class="field">
+            <label>Nombre completo <span>*</span></label>
+            <input type="text" id="alarma-c3-nombre" placeholder="Ej: Pedro Sánchez Gil">
+            <div class="field-error" id="err-alarma-c3-nombre">Introduce el nombre completo</div>
+          </div>
+          <div class="field">
+            <label>Teléfono de contacto <span>*</span></label>
+            <input type="text" id="alarma-c3-tel" placeholder="612345678" maxlength="9" inputmode="numeric" oninput="this.value=this.value.replace(/\D/g,'')">
+            <div class="field-error" id="err-alarma-c3-tel">Introduce un teléfono válido (9 dígitos)</div>
+          </div>
+          <div class="field">
+            <label>Relación con el titular <span>*</span></label>
+            <input type="text" id="alarma-c3-relacion" placeholder="Ej: Vecino, familiar, empleado...">
+            <div class="field-error" id="err-alarma-c3-relacion">Indica la relación</div>
+          </div>
+          <div class="field">
+            <label>DNI / NIE <span style="font-size:.7rem;color:rgba(255,255,255,.3);font-weight:400">(opcional, recomendado para Policía)</span></label>
+            <input type="text" id="alarma-c3-dni" placeholder="Ej: 12345678Z" maxlength="10" oninput="this.value=this.value.toUpperCase()">
+          </div>
+        </div>
+      </div>
+
+            <!-- CUENTA BANCARIA -->
+      <div class="form-block-title">🏦 Cuenta bancaria</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>IBAN para domiciliación <span>*</span></label>
+          <input type="text" id="iban" placeholder="ES00 0000 0000 0000 0000 0000" maxlength="29">
+          <div class="field-error" id="err-iban">IBAN inválido (ES + 22 dígitos)</div>
+        </div>
+        <div class="field">
+          <label>Documento bancario <span>*</span></label>
+          <div class="upload-box" id="box-cuenta" onclick="document.getElementById('inp-cuenta').click()">
+            <div class="upload-icon">🏦</div>
+            <div class="upload-label">Subir foto de la cuenta</div>
+            <div class="upload-hint">Extracto, tarjeta o certificado · máx. 5MB</div>
+            <input type="file" id="inp-cuenta" accept="image/*,.pdf" style="display:none;" onchange="handleUpload(this,'box-cuenta','prev-cuenta')">
+          </div>
+          <div id="prev-cuenta" class="upload-preview hidden"></div>
+          <div class="field-error" id="err-cuenta">Adjunta la foto del documento bancario</div>
+        </div>
+      </div>
+      <div class="iban-note" style="margin-top:12px;">
+        ⚡ Facturación mensual por adelantado. La primera factura puede incluir parte proporcional del mes de alta más el mes siguiente.
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="goStep(1)">← Atrás</button>
+        <button class="btn-primary" onclick="validateStep2()">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 3: VERIFICACIÓN INCOFISA ===== -->
+    <div class="form-section" id="section-3">
+      <div class="sec-title">Verificación de solvencia</div>
+      <div class="sec-sub">Consultamos tu perfil crediticio para gestionar tu alta de forma adecuada.</div>
+
+      <div class="incofisa-check" id="incofisaCheck">
+        <div class="check-icon loading" id="checkIcon">⟳</div>
+        <div class="check-title" id="checkTitle">Verificando...</div>
+        <div class="check-sub" id="checkSub">Consultando datos de solvencia, por favor espera.</div>
+      </div>
+
+      <div id="riskMessage" style="display:none;">
+        <div class="risk-info">
+          <h4>📋 Documentación adicional requerida</h4>
+          <p>Para continuar necesitamos que aportes la <strong>última factura pagada de tu compañía actual</strong>. Un agente de MundoMÓVIL Network se pondrá en contacto contigo por WhatsApp para solicitártela y gestionar tu alta de forma personalizada.</p>
+        </div>
+      </div>
+
+      <div id="titularCheckSection" style="display:none; margin-top:20px;">
+        <div class="risk-info" style="background:rgba(251,146,60,0.05); border-color:rgba(251,146,60,0.2);">
+          <h4>👥 Verificando también al titular actual</h4>
+          <p id="titularCheckMsg">Comprobando datos de solvencia del titular actual...</p>
+        </div>
+      </div>
+
+      <div class="btn-row" id="btnRowStep3" style="display:none;">
+        <button class="btn-secondary" onclick="goStep(2)">← Atrás</button>
+        <button class="btn-primary" id="btnContinueStep3" onclick="goStep(5)">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- ===== STEP 4: SELFIE / IDENTIDAD ===== -->
+    <div class="form-section" id="section-5">
+      <div class="sec-title">Confirma tu solicitud</div>
+      <div class="sec-sub">Revisa tus datos antes de enviar.</div>
+
+      <div class="resumen-card">
+        <div class="resumen-header">📋 Resumen de contratación</div>
+        <div class="resumen-body">
+          <div class="resumen-row"><span class="label">Tarifa</span><span class="value" id="res-tarifa">—</span></div>
+          <div class="resumen-row"><span class="label">Nombre</span><span class="value" id="res-nombre">—</span></div>
+          <div class="resumen-row"><span class="label">DNI</span><span class="value" id="res-dni">—</span></div>
+          <div class="resumen-row"><span class="label">Fecha nac.</span><span class="value" id="res-fecha-nac">—</span></div>
+          <div class="resumen-row"><span class="label">Teléfono</span><span class="value" id="res-tel">—</span></div>
+          <div class="resumen-row"><span class="label">Email</span><span class="value" id="res-email">—</span></div>
+          <div class="resumen-row" id="res-envio-row"><span class="label">Envío SIM</span><span class="value" id="res-envio">—</span></div>
+          <div class="resumen-row" id="res-fibra-row" style="display:none;"><span class="label">Instalación fibra</span><span class="value" id="res-fibra">—</span></div>
+          <div class="resumen-row" id="res-movil-row" style="display:none;"><span class="label">Línea móvil</span><span class="value" id="res-movil">—</span></div>
+          <div class="resumen-row" id="res-luz-row" style="display:none;"><span class="label">⚡ CUPS contador</span><span class="value" id="res-luz-cups" style="font-family:monospace;font-size:.82rem;">—</span></div>
+          <div class="resumen-row" id="res-alarma-row" style="display:none;"><span class="label">🚨 Contactos alarma</span><span class="value" id="res-alarma-contactos" style="font-size:.78rem;text-align:right;line-height:1.6;white-space:pre-line;">—</span></div>
+          <div class="resumen-divider"></div>
+          <div class="resumen-row" id="res-extras-row" style="display:none;"><span class="label">Servicios adicionales</span><span class="value" id="res-extras" style="text-align:right;max-width:60%;font-size:.82rem;">—</span></div>
+          <div class="resumen-divider" id="res-extras-divider" style="display:none;"></div>
+          <div class="resumen-row total"><span class="label">Total mensual</span><span class="value" id="res-precio">—</span></div>
+        </div>
+      </div>
+
+      <div id="riskWarning" style="display:none; margin-bottom:20px;">
+        <div class="risk-info">
+          <h4>⚠️ Gestión con documentación adicional</h4>
+          <p>Tu solicitud será gestionada por un agente especializado. Recibirás un WhatsApp de Iris solicitando tu factura pagada para completar el proceso de alta.</p>
+        </div>
+      </div>
+
+      <div class="legal-check">
+        <input type="checkbox" id="check-lopd">
+        <label for="check-lopd">Acepto el tratamiento de mis datos personales por parte de <strong>MundoMÓVIL Network</strong> conforme a la <a href="https://www.mmovilnetwork.com/politica-de-privacidad" target="_blank">Política de Privacidad</a> y la LOPDGDD. Los datos se usarán exclusivamente para la verificación de identidad y gestión del contrato.</label>
+      </div>
+      <div class="legal-check">
+        <input type="checkbox" id="check-contrato">
+        <label for="check-contrato">He leído y acepto las condiciones del servicio y el <a href="https://www.mmovilnetwork.com/aviso-legal" target="_blank">Aviso Legal</a> de MundoMÓVIL Network.</label>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-secondary" onclick="goStep(3)">← Atrás</button>
+        <button class="btn-primary" onclick="submitForm()">✓ Enviar solicitud</button>
+      </div>
+    </div>
+
+    <!-- ===== SUCCESS ===== -->
+    <div class="form-section" id="section-6">
+      <div class="success-screen">
+        <div class="success-icon">✓</div>
+        <h2 class="section-title" id="successTitle">¡Alta en proceso!</h2>
+        <p id="successMsg">Tu solicitud ha sido enviada correctamente. Nuestro equipo la tramitará en breve y recibirás confirmación por email y WhatsApp.</p>
+        <div id="successRisk" style="display:none;">
+          <div class="success-risk">
+            <h4>📱 Próximo paso — WhatsApp de Iris</h4>
+            <p>Recibirás un mensaje de <strong>Iris</strong>, nuestra asistente 24h, solicitándote la última factura pagada de tu compañía actual para completar el proceso de alta.</p>
+          </div>
+        </div>
+        <p style="margin-top:18px;font-size:0.82rem;color:rgba(255,255,255,0.4);">¿Tienes dudas? Llámanos al <strong style="color:var(--accent-light)">910 054 564</strong></p>
+        <a href="https://www.mmovilnetwork.com" class="btn-home">← Volver al inicio</a>
+      </div>
+    </div>
+
+</div></main>
+<!-- FOOTER -->
+<footer>
+  <div class="footer__container">
+    <div class="footer-top">
+      <div class="footer-col"><h3>Móvil</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/movil" target="_blank">Llamadas + 25GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/movil" target="_blank">Llamadas + 50GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/movil" target="_blank">Llamadas + 100GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/movil" target="_blank">Llamadas + 125GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/movil" target="_blank">Llamadas + 135GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/movil" target="_blank">GB Ilimitado 5G</a></li>
+      </ul></div>
+      <div class="footer-col"><h3>Fibra óptica</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/fibra" target="_blank">Comprobar cobertura</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra" target="_blank">Fibra 600MB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra" target="_blank">Fibra 1GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra" target="_blank">Fibra 600MB + Fijo</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra" target="_blank">Fibra 1GB + Fijo</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra" target="_blank">Fijo con Movilidad</a></li>
+      </ul></div>
+      <div class="footer-col"><h3>Fibra + Móvil</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/fibra-movil" target="_blank">Fibra 600MB + 100GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra-movil" target="_blank">Fibra 600MB + ILIMITADO</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra-movil" target="_blank">Fibra 1GB + 100GB</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra-movil" target="_blank">Fibra 600MB + Fijo + 2 Líneas + TV</a></li>
+        <li><a href="https://www.mmovilnetwork.com/fibra-movil" target="_blank">Fibra 600MB + Fijo + 3 Líneas + TV</a></li>
+      </ul></div>
+      <div class="footer-col"><h3>Televisión</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/television" target="_blank">TV Esencial</a></li>
+        <li><a href="https://www.mmovilnetwork.com/television" target="_blank">TV Deportes</a></li>
+        <li><a href="https://www.mmovilnetwork.com/television" target="_blank">TV Total</a></li>
+        <li><a href="https://www.mmovilnetwork.com/television" target="_blank">Primera Federación</a></li>
+        <li><a href="https://www.mmovilnetwork.com/television" target="_blank">Segunda Federación</a></li>
+      </ul>
+      <h3 style="margin-top:18px;">Energía</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/energia" target="_blank">Plan hogar 24h</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-mid">
+      <div class="footer-col"><h3>Seguros</h3><ul><li><a href="https://www.mmovilnetwork.com/seguros" target="_blank">Seguro total sin copagos</a></li></ul></div>
+      <div class="footer-col"><h3>Seguridad</h3><ul><li><a href="https://www.mmovilnetwork.com/alarma-seguridad" target="_blank">Seguridad hogar</a></li></ul></div>
+      <div class="footer-col"><h3>Tienda</h3><ul><li><a href="https://www.mmovilnetwork.com/tienda" target="_blank">Entra a nuestra tienda</a></li></ul></div>
+      <div class="footer-col"><h3>Blog</h3><ul><li><a href="https://www.mmovilnetwork.com/blog" target="_blank">Entra a nuestro blog</a></li></ul></div>
+      <div class="footer-col"><h3>Clientes</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/contacta-con-nosotros" target="_blank">Contacto</a></li>
+        <li><a href="https://www.mmovilnetwork.com/quienes-somos" target="_blank">Quiénes somos</a></li>
+        <li><a href="https://www.mmovilnetwork.com/centro-de-ayuda" target="_blank">Centro de ayuda</a></li>
+      </ul></div>
+      <div class="footer-col"><h3>Área distribuidores</h3><ul>
+        <li><a href="https://www.mmovilnetwork.com/hazte-distribuidor" target="_blank">Hazte distribuidor</a></li>
+        <li><a href="https://www.mmovilnetwork.com/afiliacion-y-publicidad" target="_blank">Afiliación y publicidad</a></li>
+        <li><a href="https://www.mmovilnetwork.com/area-colaboradores" target="_blank">Área colaboradores</a></li>
+      </ul></div>
+    </div>
+    <div class="footer-logos-row">
+      <div class="footer-logos footer-logos--left">
+        <img src="https://static.wixstatic.com/media/e27f7b_f022a22508cd45d682dc3364b6743c42~mv2.png/v1/fill/w_166,h_260,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/andalucia%20emprende.png" alt="Andalucía Emprende" loading="lazy">
+      </div>
+      <div class="footer-logos footer-logos--center">
+        <img src="https://static.wixstatic.com/media/f37bec_d9600c1135484473b139563340be0e32~mv2.png/v1/fill/w_510,h_118,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Logotipo_del_Ministerio_para_la_Transformaci%C3%B3n_Digital_y_de_la_Funci%C3%B3n_P%C3%BAblica_svg.png" alt="Ministerio">
+        <img src="https://static.wixstatic.com/media/f37bec_a9c342aa39c548a19538e4fad24f68ee~mv2.png/v1/fill/w_236,h_90,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo__edited.png" alt="red.es" loading="lazy">
+      </div>
+      <div class="footer-logos footer-logos--aje">
+        <img src="https://static.wixstatic.com/media/f37bec_cf018b35a04048f483085d38e4913dff~mv2.png/v1/fill/w_236,h_240,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/LOGO-AJE-CADIZ-e1454414139428_edited.png" alt="AJE Cádiz" loading="lazy">
+      </div>
+      <div class="footer-right">
+        <div class="footer-right__text">Operador registrado</div>
+        <img src="https://static.wixstatic.com/media/f37bec_8e242ea8dc644f618849ff1ce217e967~mv2.png/v1/fill/w_356,h_138,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/CNMC_logo_2_edited.png" alt="CNMC" loading="lazy">
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-links">
+        <a href="https://www.mmovilnetwork.com/aviso-legal" target="_blank">Aviso legal</a>
+        <a href="https://www.mmovilnetwork.com/politica-de-privacidad" target="_blank">Políticas de privacidad</a>
+        <a href="https://www.mmovilnetwork.com/preguntas-frecuentes" target="_blank">Preguntas frecuentes</a>
+        <a href="https://www.mmovilnetwork.com/consultar-facturas" target="_blank">Consultar facturas</a>
+      </div>
+      <div class="footer-copy"><b>MundoMÓVIL Network</b> 2026, todos los derechos reservados ©.</div>
+    </div>
+  </div>
+</footer>
+<script src="script.js"></script>
+</body>
+</html>
