@@ -1,13 +1,10 @@
 /* ============================================================
    DASHBOARD CONTRATACIONES — JS
-   Login individual · Realtime · Estado + Agente · Historial
+   Auth centralizada vía portal-auth.js
    ============================================================ */
 
-// ⚠️ EDITAR (mismos valores que en el formulario)
-const SUPABASE_URL      = "https://epetzysbwtqwjbktfkze.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVwZXR6eXNid3Rxd2pia3Rma3plIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzcyNDg1OTcsImV4cCI6MjA5MjgyNDU5N30.Sl0bIxATm_SEWd9FBThfJUOFTGX3GcmhvmEUrRZPNOw";
-
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+// Supabase — constantes expuestas por shared/portal-auth.js
+const sb = window.supabase.createClient(window.MM_SUPABASE_URL, window.MM_SUPABASE_ANON, {
   auth: { persistSession: true, autoRefreshToken: true }
 });
 
@@ -32,46 +29,18 @@ const state = {
 
 const $ = (id) => document.getElementById(id);
 
-// ─── LOGIN ─────────────────────────────────────────────────
-async function checkSession() {
-  const { data: { session } } = await sb.auth.getSession();
-  if (session) { state.user = session.user; showApp(); }
-  else showLogin();
-}
-function showLogin() { $("loginOverlay").style.display = "flex"; $("app").style.display = "none"; }
-async function showApp() {
-  $("loginOverlay").style.display = "none";
-  $("app").style.display = "block";
-  $("userName").textContent = state.user?.email || "Conectado";
-  const ok = await detectRole();
-  if (!ok) return;  // instalador bloqueado: detectRole ya cerró sesión
-  loadRows();
-  subscribeRealtime();
-}
+// ─── INIT — autenticación centralizada vía portal-auth.js ─────
+(async function () {
+  const auth = await window.portalAuth(sb, 'contratos');
+  if (!auth) return;
 
-// Detecta el rol del usuario logueado y aplica permisos.
-// Roles: owner (solo ver) · developer (todo) · trabajador (gestionar) · instalador (NO entra)
-// Devuelve false si el usuario no tiene permiso para usar el dashboard.
-async function detectRole() {
-  try {
-    const { data, error } = await sb
-      .from("profiles").select("role").eq("id", state.user.id).single();
-    if (!error && data) state.role = data.role;
-  } catch (e) { console.error("detectRole:", e); }
+  window.portalAuthWatch(sb);
 
-  // Instalador no entra a este dashboard
-  if (state.role === "instalador") {
-    await sb.auth.signOut();
-    showLogin();
-    const err = $("loginError");
-    err.textContent = "Tu perfil (instalador) no tiene acceso a este panel.";
-    err.style.display = "block";
-    return false;
-  }
-
-  state.isDeveloper = state.role === "developer";
-  // Pueden editar estado/agente: developer y trabajador. Owner solo ve.
-  state.canEdit = state.role === "developer" || state.role === "trabajador";
+  state.user = auth.user;
+  state.role = auth.profile.role;
+  state.isDeveloper = window.portalIsDeveloper(auth.profile);
+  // Pueden editar: developer y staff. Owner solo ve.
+  state.canEdit = state.isDeveloper || state.role === 'trabajador';
 
   const display = (state.user?.email || "Conectado").split("@")[0];
   const tag = state.role ? " · " + state.role.charAt(0).toUpperCase() + state.role.slice(1) : "";
@@ -79,30 +48,26 @@ async function detectRole() {
 
   document.body.classList.toggle("is-developer", state.isDeveloper);
   document.body.classList.toggle("is-readonly", !state.canEdit);
-  return true;
-}
 
-$("loginBtn").addEventListener("click", async () => {
-  const email = $("loginEmail").value.trim();
-  const pass = $("loginPass").value;
-  const err = $("loginError");
-  err.style.display = "none";
-  if (!email || !pass) { err.textContent = "Rellena email y contraseña."; err.style.display = "block"; return; }
-  const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
-  if (error) { err.textContent = "Credenciales incorrectas."; err.style.display = "block"; return; }
-  state.user = data.user;
-  showApp();
-});
-$("loginPass").addEventListener("keydown", (e) => { if (e.key === "Enter") $("loginBtn").click(); });
+  loadRows();
+  subscribeRealtime();
+})();
 
+// Logout — el login lo gestiona el portal
 $("logoutBtn").addEventListener("click", async () => {
   if (state.channel) await sb.removeChannel(state.channel);
   await sb.auth.signOut();
   state.rows = []; state.user = null;
-  showLogin();
+  window.location.reload();
 });
 
-// ─── CARGA ─────────────────────────────────────────────────
+// Volver al panel sin cerrar sesión
+const _volverBtn = $("volverPanelBtn");
+if (_volverBtn) _volverBtn.addEventListener("click", () => {
+  try { window.top.location.href = "../index.html"; }
+  catch (e) { window.location.href = "../index.html"; }
+});
+
 async function loadRows() {
   setLive(true, "Cargando…");
   const { data, error } = await sb
@@ -250,9 +215,10 @@ async function openModal(id) {
   const docs = await Promise.all([signedUrl(r.dni_frontal_path), signedUrl(r.dni_trasero_path), signedUrl(r.cuenta_path)]);
   const rows = [
     ["Fecha alta", formatDate(r.created_at)],
-    ["Tarifa", r.tarifa], ["Precio", r.precio], ["Precio total", calcularPrecioTotal(r)], ["Extras", r.extras], ["Líneas", r.lineas],
+    ["Tarifa", r.tarifa], ["Precio", r.precio], ["Precio total", calcularPrecioTotal(r)], ["Extras", r.extras],
     ["DNI", r.dni], ["F. Nacimiento", r.fecha_nac], ["Teléfono", r.telefono], ["Email", r.email],
-    ["Móvil", r.movil_info], ["Dirección envío", r.envio_dir], ["Dirección fibra", r.fibra_dir],
+    ["Línea 1 (principal)", r.movil_info], ["Líneas incluidas", r.lineas_incluidas], ["Líneas adicionales", r.lineas],
+    ["Dirección envío", r.envio_dir], ["Dirección fibra", r.fibra_dir],
     ["CUPS luz", r.cups_luz], ["Alarma", r.alarma], ["IBAN", r.iban],
     ["Riesgo", r.riesgo ? "⚠ SÍ — revisión manual" : "OK"],
     ["Sin documentación", r.sin_doc ? "SÍ" : "NO"],
@@ -386,10 +352,11 @@ function calcularPrecioTotal(r) {
   function num(str) {
     if (!str) return 0;
     var total = 0;
-    // Captura cifras tipo 19,95€ / 10€ / 5.00€
-    var matches = String(str).match(/(\d+[.,]?\d*)\s*€/g) || [];
+    // Captura cifras tipo 19,95€ / 10€ / 5.00€ y también 5/mes / 8/mes (líneas adicionales sin símbolo €)
+    var matches = String(str).match(/(\d+[.,]?\d*)\s*(?:€|\/mes)/g) || [];
     matches.forEach(function(m) {
-      total += parseFloat(m.replace("€", "").replace(",", ".").trim()) || 0;
+      var n = m.replace(/[€]|\/mes/g, "").replace(",", ".").trim();
+      total += parseFloat(n) || 0;
     });
     return total;
   }
@@ -415,4 +382,3 @@ function formatDate(iso) {
   return d.toLocaleDateString("es-ES", { day:"2-digit", month:"2-digit", year:"numeric" }) + " " + d.toLocaleTimeString("es-ES", { hour:"2-digit", minute:"2-digit" });
 }
 
-checkSession();

@@ -157,6 +157,7 @@ function selectTariff(card) {
     name: card.getAttribute("data-name"),
     price: parseFloat(card.getAttribute("data-price")),
     tipo: card.getAttribute("data-tipo"),
+    lineasIncluidas: parseInt(card.getAttribute("data-lineas") || "0", 10),
   };
   upsellStart();
 }
@@ -644,12 +645,13 @@ function resolvePackOrExtras(hasFibra, movilId, tvId, hasAlarma, energiaTipo) {
         price: "Precio seg\u00FAn consumo",
       });
     var oldName = pendingCard.name;
-    pendingCard = { name: pack.name, price: pack.price, tipo: pack.tipo };
+    pendingCard = { name: pack.name, price: pack.price, tipo: pack.tipo, lineasIncluidas: pack.lineasIncluidas || 1 };
     selectedTariff = {
       name: pack.name,
       price: pack.price,
       tipo: pack.tipo,
       extras: extras,
+      lineasIncluidas: pack.lineasIncluidas || 1,
     };
     upsellClose();
     // Banner: hemos mejorado tu tarifa
@@ -935,6 +937,7 @@ function upsellApply(extras) {
     price: pendingCard.price,
     tipo: pendingCard.tipo,
     extras: extras,
+    lineasIncluidas: pendingCard.lineasIncluidas || 0,
   };
   // Ir directamente al paso 2 (datos del cliente)
   goStep(2);
@@ -1003,6 +1006,8 @@ function goStep(n) {
     document.getElementById("blk-movil-wrap").style.display = needsMovil
       ? "block"
       : "none";
+    // Generar las líneas incluidas en la tarifa (sin coste extra)
+    if (needsMovil) sincronizarLineasIncluidas();
     document.getElementById("lbl-envio").style.display = needsEnvio
       ? "block"
       : "none";
@@ -1153,7 +1158,29 @@ function toggleCambioTitular() {
 }
 
 // ---- LÍNEAS ADICIONALES ----
-var lineasAdicionales = []; // [{ id:'movil-100gb'|'movil-ilim', label, price, mode:'porta'|'alta', numero:'', compania:'' }]
+var lineasAdicionales = []; // [{ id, label, price, mode:'porta'|'alta', numero:'', compania:'', incluida:bool }]
+
+// Sincroniza las líneas INCLUIDAS en la tarifa (sin coste extra).
+// La línea 1 es la principal (bloque fijo). Si la tarifa incluye N líneas,
+// se generan (N-1) bloques de línea incluida con price 0.
+function sincronizarLineasIncluidas() {
+  var n = (selectedTariff && selectedTariff.lineasIncluidas) || 0;
+  // Quitar las incluidas previas (por si se cambió de tarifa), conservar las adicionales de pago
+  lineasAdicionales = lineasAdicionales.filter(function (l) { return !l.incluida; });
+  // Generar (n-1) líneas incluidas extra (la 1ª va en el bloque principal)
+  var extra = n > 1 ? n - 1 : 0;
+  var nuevas = [];
+  for (var k = 0; k < extra; k++) {
+    nuevas.push({
+      id: "incluida", label: "Línea incluida", price: "0€/mes",
+      mode: "porta", numero: "", compania: "",
+      origen: "contrato", iccid: "", incluida: true,
+    });
+  }
+  // Incluidas primero, luego las adicionales de pago
+  lineasAdicionales = nuevas.concat(lineasAdicionales);
+  renderLineasAdicionales();
+}
 
 function abrirModalLineaAdicional() {
   if (lineasAdicionales.length >= 6) {
@@ -1196,26 +1223,41 @@ function renderLineasAdicionales() {
   var wrap = document.getElementById("lineas-adicionales-wrap");
   if (!wrap) return;
   var html = "";
+  // Contar incluidas para numerar correctamente
+  var nIncl = 0, nAdic = 0;
   for (var i = 0; i < lineasAdicionales.length; i++) {
     var l = lineasAdicionales[i];
     var activePorta = l.mode === "porta" ? " active" : "";
     var activeAlta = l.mode === "alta" ? " active" : "";
+    var esIncluida = !!l.incluida;
+    var bgColor = esIncluida ? "rgba(34,197,94,0.07)" : "rgba(95,75,139,0.08)";
+    var bdColor = esIncluida ? "rgba(34,197,94,0.30)" : "rgba(95,75,139,0.25)";
     html +=
-      '<div class="linea-adicional-block" style="margin-top:20px;padding:16px;background:rgba(95,75,139,0.08);border:1px solid rgba(95,75,139,0.25);border-radius:12px;">';
+      '<div class="linea-adicional-block" style="margin-top:20px;padding:16px;background:' + bgColor + ';border:1px solid ' + bdColor + ';border-radius:12px;">';
     html +=
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">';
-    html +=
-      '<span style="font-weight:700;font-size:.9rem;">\u{1F4F1} L\u00EDnea adicional ' +
-      (i + 1) +
-      ' \u00B7 <span style="color:var(--accent-light);">' +
-      l.label +
-      " (" +
-      l.price +
-      ")</span></span>";
-    html +=
-      '<button type="button" onclick="eliminarLineaAdicional(' +
-      i +
-      ')" style="background:rgba(255,60,60,0.1);border:1px solid rgba(255,60,60,0.3);color:rgba(255,100,100,0.8);border-radius:7px;padding:3px 10px;cursor:pointer;font-size:.78rem;">Eliminar</button>';
+    if (esIncluida) {
+      nIncl++;
+      // La línea principal es la 1; estas son la 2, 3...
+      html +=
+        '<span style="font-weight:700;font-size:.9rem;">\u{1F4F1} L\u00EDnea ' + (nIncl + 1) +
+        ' \u00B7 <span style="color:#22c55e;">incluida en la tarifa</span></span>';
+      html += '<span style="font-size:.72rem;color:#22c55e;font-weight:600;">Sin coste extra</span>';
+    } else {
+      nAdic++;
+      html +=
+        '<span style="font-weight:700;font-size:.9rem;">\u{1F4F1} L\u00EDnea adicional ' +
+        nAdic +
+        ' \u00B7 <span style="color:var(--accent-light);">' +
+        l.label +
+        " (" +
+        l.price +
+        ")</span></span>";
+      html +=
+        '<button type="button" onclick="eliminarLineaAdicional(' +
+        i +
+        ')" style="background:rgba(255,60,60,0.1);border:1px solid rgba(255,60,60,0.3);color:rgba(255,100,100,0.8);border-radius:7px;padding:3px 10px;cursor:pointer;font-size:.78rem;">Eliminar</button>';
+    }
     html += "</div>";
     // Modo porta/alta
     html += '<div class="option-cards" style="margin-bottom:14px;gap:8px;">';
@@ -1395,13 +1437,50 @@ function handleUploadAlt(altInput, mainInputId, boxId, previewId) {
 }
 
 // Valida que el fichero sea PNG, JPG o PDF. Devuelve true/false.
+// Tamaño mínimo: un documento real (foto/PDF) pesa decenas de KB.
+// Archivos de ~244-567 bytes son imágenes vacías/negras que algunos
+// móviles generan al disparar la cámara sin enfocar -> se rechazan.
+var TAMANO_MINIMO_BYTES = 10000; // 10 KB
+var DIMENSION_MINIMA_PX = 200;   // ancho y alto mínimos para una imagen real
+
+// Comprueba que una imagen tenga dimensiones reales (no 1x1 ni vacía).
+// Para PDF no aplica (se valida solo por tamaño).
+function validarDimensionesImagen(file) {
+  return new Promise(function (resolve) {
+    if (!file || file.type === "application/pdf" || /\.pdf$/i.test(file.name || "")) {
+      resolve(true);
+      return;
+    }
+    var url = URL.createObjectURL(file);
+    var img = new Image();
+    img.onload = function () {
+      var ok = img.naturalWidth >= DIMENSION_MINIMA_PX && img.naturalHeight >= DIMENSION_MINIMA_PX;
+      URL.revokeObjectURL(url);
+      if (!ok) console.error("Imagen rechazada por dimensiones:", img.naturalWidth + "x" + img.naturalHeight);
+      resolve(ok);
+    };
+    img.onerror = function () {
+      URL.revokeObjectURL(url);
+      console.error("Imagen ilegible/corrupta:", file.name);
+      resolve(false);
+    };
+    img.src = url;
+  });
+}
+
 function esFicheroValido(file) {
   if (!file) return false;
   var tiposOk = ["image/png", "image/jpeg", "image/jpg", "application/pdf"];
   var nombre = (file.name || "").toLowerCase();
   var extOk = /\.(png|jpg|jpeg|pdf)$/.test(nombre);
-  // Acepta si el MIME es válido O la extensión es válida (algunos navegadores no rellenan type)
-  return tiposOk.indexOf(file.type) >= 0 || extOk;
+  var tipoOk = tiposOk.indexOf(file.type) >= 0 || extOk;
+  if (!tipoOk) return false;
+  // Rechazar archivos sospechosamente pequenos (placeholder/icono vacio)
+  if (file.size > 0 && file.size < TAMANO_MINIMO_BYTES) {
+    console.error("Fichero rechazado por tamano (" + file.size + " bytes):", file.name);
+    return false;
+  }
+  return true;
 }
 
 function handleUpload(input, boxId, previewId) {
@@ -1410,31 +1489,50 @@ function handleUpload(input, boxId, previewId) {
   const preview = document.getElementById(previewId);
   if (!file) return;
 
-  // Validar tipo: solo PNG, JPG o PDF
+  // Validar tipo y tamaño
   if (!esFicheroValido(file)) {
+    var esPequeno = file.size > 0 && file.size < TAMANO_MINIMO_BYTES;
     input.value = ""; // limpiar el input
     box.classList.remove("uploaded");
     const ico = box.querySelector(".upload-icon");
     if (ico) ico.textContent = "⚠️";
     const lbl = box.querySelector(".upload-label");
-    if (lbl) lbl.textContent = "Solo PNG, JPG o PDF";
+    if (lbl) lbl.textContent = esPequeno ? "Imagen no válida, repítela" : "Solo PNG, JPG o PDF";
     if (preview) {
-      preview.textContent = "✗ Formato no válido. Sube PNG, JPG o PDF.";
+      preview.textContent = esPequeno
+        ? "✗ El archivo está vacío o es demasiado pequeño. Haz la foto de nuevo o sube el documento real."
+        : "✗ Formato no válido. Sube PNG, JPG o PDF.";
       preview.classList.remove("hidden");
     }
     return;
   }
 
-  box.classList.add("uploaded");
-  box.querySelector(".upload-icon").textContent = "✅";
-  box.querySelector(".upload-label").textContent = file.name;
-  preview.textContent =
-    "✓ " + file.name + " (" + (file.size / 1024).toFixed(0) + " KB)";
-  preview.classList.remove("hidden");
-  // Ocultar error si lo había
-  const errId = boxId.replace("box-", "err-");
-  const errEl = document.getElementById(errId);
-  if (errEl) errEl.style.display = "none";
+  // Validar dimensiones reales (rechaza imágenes negras/vacías que pesan poco contenido visual)
+  validarDimensionesImagen(file).then(function (dimOk) {
+    if (!dimOk) {
+      input.value = "";
+      box.classList.remove("uploaded");
+      var ico2 = box.querySelector(".upload-icon");
+      if (ico2) ico2.textContent = "⚠️";
+      var lbl2 = box.querySelector(".upload-label");
+      if (lbl2) lbl2.textContent = "Imagen no válida, repítela";
+      if (preview) {
+        preview.textContent = "✗ La imagen parece vacía o está en negro. Asegúrate de enfocar el documento y repite la foto.";
+        preview.classList.remove("hidden");
+      }
+      return;
+    }
+    box.classList.add("uploaded");
+    box.querySelector(".upload-icon").textContent = "✅";
+    box.querySelector(".upload-label").textContent = file.name;
+    preview.textContent =
+      "✓ " + file.name + " (" + (file.size / 1024).toFixed(0) + " KB)";
+    preview.classList.remove("hidden");
+    // Ocultar error si lo había
+    var errId = boxId.replace("box-", "err-");
+    var errEl = document.getElementById(errId);
+    if (errEl) errEl.style.display = "none";
+  });
 }
 
 // ---- VALIDATE STEP 2 ----
@@ -1457,8 +1555,15 @@ function validateStep2() {
   function checkUpload(inputId, errId) {
     const inp = document.getElementById(inputId);
     const err = document.getElementById(errId);
-    if (!inp || !inp.files || !inp.files[0]) {
-      if (err) err.style.display = "block";
+    var f = inp && inp.files && inp.files[0] ? inp.files[0] : null;
+    // Debe existir Y pasar la validación de tipo/tamaño (rechaza archivos vacíos < 10KB)
+    if (!f || !esFicheroValido(f)) {
+      if (err) {
+        err.textContent = (f && f.size > 0 && f.size < TAMANO_MINIMO_BYTES)
+          ? "El archivo está vacío o es demasiado pequeño. Repite la foto del documento."
+          : "Adjunta el documento (PNG, JPG o PDF)";
+        err.style.display = "block";
+      }
       valid = false;
     } else {
       if (err) err.style.display = "none";
@@ -1819,6 +1924,31 @@ function validateStep4() {
 */
 
 // ---- FILL RESUMEN ----
+// Helper: lee el value de un campo por id (cadena vacía si no existe)
+function valEl(id) {
+  var el = document.getElementById(id);
+  return el ? (el.value || "").trim() : "";
+}
+
+// Construye una dirección completa y legible a partir de sus partes.
+// p: prefijo de los campos en el snapshot ("envio" o "fibra").
+function formatDireccion(s, p) {
+  var via = [s[p + "_tipo"], s[p + "_via"]].filter(Boolean).join(" ");
+  var num = s[p + "_num"] ? "nº " + s[p + "_num"] : "";
+  // Detalles de portal: bloque, escalera, planta, piso/puerta
+  var detalles = [];
+  if (s[p + "_bloque"]) detalles.push("Bloque " + s[p + "_bloque"]);
+  if (s[p + "_esc"]) detalles.push("Esc. " + s[p + "_esc"]);
+  if (s[p + "_planta"]) detalles.push("Planta " + s[p + "_planta"]);
+  if (s[p + "_piso"]) detalles.push(s[p + "_piso"]);
+  var detStr = detalles.join(", ");
+  var cpLoc = [s[p + "_cp"], s[p + "_municipio"]].filter(Boolean).join(" ");
+  var prov = s[p + "_provincia"] || "";
+  return [via + (num ? " " + num : ""), detStr, cpLoc, prov]
+    .filter(Boolean)
+    .join(" · ");
+}
+
 function fillResumen() {
   if (!selectedTariff) return;
   // Guardar snapshot de todos los datos en variable global
@@ -1882,39 +2012,31 @@ function fillResumen() {
     alarma_c3_tel: document.getElementById("alarma-c3-tel")
       ? document.getElementById("alarma-c3-tel").value
       : "",
-    envio_tipo: document.getElementById("envio-tipo")
-      ? document.getElementById("envio-tipo").value
-      : "",
-    envio_via: document.getElementById("envio-via")
-      ? document.getElementById("envio-via").value
-      : "",
-    envio_num: document.getElementById("envio-num")
-      ? document.getElementById("envio-num").value
-      : "",
-    envio_cp: document.getElementById("envio-cp")
-      ? document.getElementById("envio-cp").value
-      : "",
-    envio_municipio: document.getElementById("envio-municipio")
-      ? document.getElementById("envio-municipio").value
-      : "",
+    envio_tipo: valEl("envio-tipo"),
+    envio_via: valEl("envio-via"),
+    envio_num: valEl("envio-num"),
+    envio_bloque: valEl("envio-bloque"),
+    envio_esc: valEl("envio-esc"),
+    envio_planta: valEl("envio-planta"),
+    envio_piso: valEl("envio-piso"),
+    envio_cp: valEl("envio-cp"),
+    envio_municipio: valEl("envio-loc"),
+    envio_provincia: valEl("envio-prov"),
     fibra_misma: document.getElementById("chk-misma-dir")
       ? document.getElementById("chk-misma-dir").checked
       : false,
     fibra_tipo: document.getElementById("fibra-tipo")
       ? document.getElementById("fibra-tipo").value
       : "",
-    fibra_via: document.getElementById("fibra-via")
-      ? document.getElementById("fibra-via").value
-      : "",
-    fibra_num: document.getElementById("fibra-num")
-      ? document.getElementById("fibra-num").value
-      : "",
-    fibra_cp: document.getElementById("fibra-cp")
-      ? document.getElementById("fibra-cp").value
-      : "",
-    fibra_municipio: document.getElementById("fibra-municipio")
-      ? document.getElementById("fibra-municipio").value
-      : "",
+    fibra_via: valEl("fibra-via"),
+    fibra_num: valEl("fibra-num"),
+    fibra_bloque: valEl("fibra-bloque"),
+    fibra_esc: valEl("fibra-esc"),
+    fibra_planta: valEl("fibra-planta"),
+    fibra_piso: valEl("fibra-piso"),
+    fibra_cp: valEl("fibra-cp"),
+    fibra_municipio: valEl("fibra-loc"),
+    fibra_provincia: valEl("fibra-prov"),
   };
   console.log("Snapshot guardado:", formDataSnapshot);
   sendWebhookData(formDataSnapshot);
@@ -2048,6 +2170,7 @@ function fillResumen() {
     if (m) precioExtra += parseFloat(m[1].replace(",", "."));
   });
   lineasAdicionales.forEach(function (l) {
+    if (l.incluida) return; // Las líneas incluidas no suman precio
     var num = typeof PRICES_NUM !== "undefined" ? PRICES_NUM[l.id] : null;
     if (num) {
       precioExtra += num;
@@ -2161,11 +2284,38 @@ async function sendWebhookData(s) {
       return e.label + (e.price ? " (" + e.price + ")" : "");
     })
     .join(", ");
-  var lineas = lineasAdicionales
+  // Detalla una línea con todos sus datos (modo, número, compañía, origen, ICCID)
+  function describeLinea(l) {
+    var partes = [];
+    if (l.mode === "porta") {
+      partes.push("Portabilidad");
+      if (l.numero) partes.push("Nº " + l.numero);
+      if (l.compania) partes.push(l.compania);
+      if (l.origen === "prepago") {
+        partes.push("Prepago");
+        if (l.iccid) partes.push("ICCID " + l.iccid);
+      } else {
+        partes.push("Contrato");
+      }
+    } else {
+      partes.push("Alta nueva");
+    }
+    return partes.join(" · ");
+  }
+  // Líneas incluidas (sin coste) y adicionales (de pago), por separado
+  var lineasIncl = lineasAdicionales.filter(function (l) { return l.incluida; });
+  var lineasAdic = lineasAdicionales.filter(function (l) { return !l.incluida; });
+  var lineas = lineasAdic
     .map(function (l) {
-      return l.label + " · " + l.price;
+      return l.label + " · " + l.price + " · " + describeLinea(l);
     })
-    .join(", ");
+    .join(" || ");
+  // Las incluidas se numeran a partir de la 2 (la 1 es la principal en movil_info)
+  var lineasIncluidasStr = lineasIncl
+    .map(function (l, idx) {
+      return "Línea " + (idx + 2) + ": " + describeLinea(l);
+    })
+    .join(" || ");
   var isRisk = incofisaResult === "risk" || incofisaTitularResult === "risk";
 
   var movilInfoSnap = "";
@@ -2174,20 +2324,10 @@ async function sendWebhookData(s) {
   if (s.movilMode === "alta") movilInfoSnap = "Alta nueva";
   if (s.movilMode === "cambio")
     movilInfoSnap = "Cambio titular: " + (s.movil_cambio || "");
-  var envioDirSnap = [
-    s.envio_tipo,
-    s.envio_via,
-    s.envio_num,
-    s.envio_cp,
-    s.envio_municipio,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  var envioDirSnap = formatDireccion(s, "envio");
   var fibraDirSnap = s.fibra_misma
     ? "Misma que envío"
-    : [s.fibra_tipo, s.fibra_via, s.fibra_num, s.fibra_cp, s.fibra_municipio]
-        .filter(Boolean)
-        .join(" ");
+    : formatDireccion(s, "fibra");
   var alarmaSnap = [
     s.alarma_c1_nombre ? "1º " + s.alarma_c1_nombre + " · " + s.alarma_c1_tel : "",
     s.alarma_c2_nombre ? "2º " + s.alarma_c2_nombre + " · " + s.alarma_c2_tel : "",
@@ -2227,6 +2367,7 @@ async function sendWebhookData(s) {
         : "Según consumo",
     extras: extras || "Ninguno",
     lineas: lineas || "Ninguna",
+    lineas_incluidas: lineasIncluidasStr || "Ninguna",
     nombre: s.nombre || "",
     dni: dniNum,
     fecha_nac: s.fecha_nac || "",
@@ -2421,20 +2562,10 @@ async function submitForm() {
   if (s.movilMode === "alta") movilInfoSnap = "Alta nueva";
   if (s.movilMode === "cambio")
     movilInfoSnap = "Cambio titular: " + (s.movil_cambio || "");
-  var envioDirSnap = [
-    s.envio_tipo,
-    s.envio_via,
-    s.envio_num,
-    s.envio_cp,
-    s.envio_municipio,
-  ]
-    .filter(Boolean)
-    .join(" ");
+  var envioDirSnap = formatDireccion(s, "envio");
   var fibraDirSnap = s.fibra_misma
     ? "Misma que envío"
-    : [s.fibra_tipo, s.fibra_via, s.fibra_num, s.fibra_cp, s.fibra_municipio]
-        .filter(Boolean)
-        .join(" ");
+    : formatDireccion(s, "fibra");
   var alarmaSnap = [
     s.alarma_c1_nombre
       ? "1º " + s.alarma_c1_nombre + " · " + s.alarma_c1_tel
